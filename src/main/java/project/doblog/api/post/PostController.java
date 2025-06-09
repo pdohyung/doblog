@@ -4,8 +4,12 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import project.doblog.api.post.request.PostCreateRequest;
+import project.doblog.api.post.request.PostSearchRequest;
 import project.doblog.application.post.PostService;
-import project.doblog.domain.post.Post;
+import project.doblog.application.post.response.PostResponse;
+import project.doblog.exception.ApiResponse;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,12 +19,20 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping
-    public void createPost(@RequestBody @Valid PostCreateRequest request) {
+    public ApiResponse<Void> createPost(@RequestBody @Valid PostCreateRequest request) {
         postService.write(request.toServiceRequest());
+        return ApiResponse.ok();
     }
 
     @GetMapping("/{postId}")
-    public Post getPost(@PathVariable Long postId) {
-        return postService.get(postId);
+    public ApiResponse<PostResponse> getPost(@PathVariable Long postId) {
+        PostResponse response = postService.get(postId);
+        return ApiResponse.ok(response);
+    }
+
+    @GetMapping
+    public ApiResponse<List<PostResponse>> getPosts(@ModelAttribute PostSearchRequest request) {
+        List<PostResponse> response = postService.getPosts(request.toServiceRequest());
+        return ApiResponse.ok(response);
     }
 }

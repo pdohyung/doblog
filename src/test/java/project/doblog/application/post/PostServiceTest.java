@@ -4,9 +4,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import project.doblog.application.ServiceTestSupport;
 import project.doblog.application.post.request.PostCreateServiceRequest;
+import project.doblog.application.post.request.PostSearchServiceRequest;
+import project.doblog.application.post.response.PostResponse;
 import project.doblog.domain.post.Post;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.groups.Tuple.tuple;
@@ -40,9 +43,38 @@ class PostServiceTest extends ServiceTestSupport {
 
         postRepository.save(post);
 
-        Post findPost = postService.get(post.getId());
+        PostResponse findPost = postService.get(post.getId());
 
         assertThat(findPost.getTitle()).isEqualTo("제목");
         assertThat(findPost.getContent()).isEqualTo("내용");
+    }
+
+    @DisplayName("1페이지 글을 조회한다.")
+    @Test
+    void getFirstPagePosts() {
+        List<Post> requests = IntStream.range(1, 21)
+                .mapToObj(i -> Post.builder()
+                        .title("제목" + i)
+                        .content("내용" + i)
+                        .build())
+                .toList();
+
+        postRepository.saveAll(requests);
+
+        PostSearchServiceRequest request = PostSearchServiceRequest.builder()
+                .page(1)
+                .size(5)
+                .build();
+        List<PostResponse> posts = postService.getPosts(request);
+
+        assertThat(posts).hasSize(5)
+                .extracting("title", "content")
+                .containsExactly(
+                        tuple("제목20", "내용20"),
+                        tuple("제목19", "내용19"),
+                        tuple("제목18", "내용18"),
+                        tuple("제목17", "내용17"),
+                        tuple("제목16", "내용16")
+                );
     }
 }

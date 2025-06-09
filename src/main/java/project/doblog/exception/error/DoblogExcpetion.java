@@ -1,6 +1,7 @@
 package project.doblog.exception.error;
 
 import lombok.Getter;
+import org.springframework.http.HttpStatus;
 
 @Getter
 public abstract class DoblogExcpetion extends RuntimeException {
@@ -9,5 +10,5 @@ public abstract class DoblogExcpetion extends RuntimeException {
         super(message);
     }
 
-    public abstract int getStatusCode();
+    public abstract HttpStatus getStatus();
 }

@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.doblog.application.post.request.PostCreateServiceRequest;
+import project.doblog.application.post.request.PostSearchServiceRequest;
+import project.doblog.application.post.response.PostResponse;
 import project.doblog.domain.post.Post;
 import project.doblog.domain.post.repository.PostRepository;
 import project.doblog.exception.error.PostNotFoundException;
+
+import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
@@ -25,10 +29,16 @@ public class PostService {
         postRepository.save(post);
     }
 
-    public Post get(Long postId) {
+    public PostResponse get(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(PostNotFoundException::new);
 
-        return post;
+        return new PostResponse(post);
+    }
+
+    public List<PostResponse> getPosts(PostSearchServiceRequest request) {
+        return postRepository.getPosts(request.getSize(), request.getOffset()).stream()
+                .map(PostResponse::new)
+                .toList();
     }
 }

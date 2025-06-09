@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestControllerAdvice
-public class ExceptionController {
+public class ApiControllerAdvice {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> invalidRequestHandler(MethodArgumentNotValidException e) {
+    public ResponseEntity<ApiResponse<Object>> invalidRequestHandler(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
         String firstErrorMessage = result.getFieldErrors().get(0).getDefaultMessage();
         List<String> errorList = result.getFieldErrors()
@@ -28,23 +28,15 @@ public class ExceptionController {
 
         log.warn("검증 예외 리스트: {}", errorList);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(ErrorResponse.builder()
-                        .code(String.valueOf(HttpStatus.BAD_REQUEST.value()))
-                        .message(firstErrorMessage)
-                        .build());
+        ApiResponse<Object> response = ApiResponse.of(HttpStatus.BAD_REQUEST, firstErrorMessage, null);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     @ExceptionHandler(DoblogExcpetion.class)
-    public ResponseEntity<ErrorResponse> doblogException(DoblogExcpetion e) {
+    public ResponseEntity<ApiResponse<Object>> doblogException(DoblogExcpetion e) {
         log.warn("예외 메시지: {}", e.getMessage());
 
-        int statusCode = e.getStatusCode();
-
-        return ResponseEntity.status(statusCode)
-                .body(ErrorResponse.builder()
-                        .code(String.valueOf(statusCode))
-                        .message(e.getMessage())
-                        .build());
+        ApiResponse<Object> response = ApiResponse.of(e.getStatus(), e.getMessage(), null);
+        return ResponseEntity.status(e.getStatus()).body(response);
     }
 }
