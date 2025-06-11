@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import project.doblog.application.post.request.PostCreateServiceRequest;
+import project.doblog.application.post.request.PostEditServiceRequest;
 import project.doblog.application.post.request.PostSearchServiceRequest;
 import project.doblog.application.post.response.PostResponse;
 import project.doblog.domain.post.Post;
+import project.doblog.domain.post.PostEditor;
 import project.doblog.domain.post.repository.PostRepository;
 import project.doblog.exception.error.PostNotFoundException;
 
@@ -36,9 +38,30 @@ public class PostService {
         return new PostResponse(post);
     }
 
-    public List<PostResponse> getPosts(PostSearchServiceRequest request) {
+    public List<PostResponse> getList(PostSearchServiceRequest request) {
         return postRepository.getPosts(request.getSize(), request.getOffset()).stream()
                 .map(PostResponse::new)
                 .toList();
+    }
+
+    @Transactional
+    public void edit(PostEditServiceRequest request) {
+        Post post = postRepository.findById(request.getPostId())
+                .orElseThrow(PostNotFoundException::new);
+
+        PostEditor editor = post.toEditor()
+                .title(request.getTitle())
+                .content(request.getContent())
+                .build();
+
+        post.change(editor);
+    }
+
+    @Transactional
+    public void delete(Long postId) {
+        Post post = postRepository.findById(postId)
+                .orElseThrow(PostNotFoundException::new);
+
+        postRepository.deleteById(postId);
     }
 }

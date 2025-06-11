@@ -6,6 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import project.doblog.api.ControllerTestSupport;
 import project.doblog.api.post.request.PostCreateRequest;
+import project.doblog.api.post.request.PostEditRequest;
 import project.doblog.application.post.request.PostSearchServiceRequest;
 import project.doblog.application.post.response.PostResponse;
 
@@ -19,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 class PostControllerTest extends ControllerTestSupport {
 
-    @DisplayName("글 제목은 필수다.")
+    @DisplayName("글 작성에 제목이 없으면 예외가 발생한다.")
     @Test
     void writePostWithoutTitle() throws Exception {
         PostCreateRequest request = PostCreateRequest.builder()
@@ -40,7 +41,7 @@ class PostControllerTest extends ControllerTestSupport {
                 .andDo(print());
     }
 
-    @DisplayName("글 내용은 필수다.")
+    @DisplayName("글 작성에 내용이 없으면 예외가 발생한다.")
     @Test
     void writePostWithoutContent() throws Exception {
         PostCreateRequest request = PostCreateRequest.builder()
@@ -109,7 +110,7 @@ class PostControllerTest extends ControllerTestSupport {
     @DisplayName("1페이지 글을 조회한다.")
     @Test
     void getPosts() throws Exception {
-        when(postService.getPosts(any(PostSearchServiceRequest.class))).thenReturn(List.of());
+        when(postService.getList(any(PostSearchServiceRequest.class))).thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/posts?page=1&size=5")
@@ -119,6 +120,39 @@ class PostControllerTest extends ControllerTestSupport {
                 .andExpect(jsonPath("status").value("OK"))
                 .andExpect(jsonPath("message").value("OK"))
                 .andExpect(jsonPath("data").isArray())
+                .andDo(print());
+    }
+
+    @DisplayName("글을 수정한다.")
+    @Test
+    void editPost() throws Exception {
+        PostEditRequest request = PostEditRequest.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders
+                        .patch("/posts/{postId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(om.writeValueAsString(request))
+                )
+                .andExpect(jsonPath("code").value("200"))
+                .andExpect(jsonPath("status").value("OK"))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("data").isEmpty())
+                .andDo(print());
+    }
+
+    @DisplayName("글을 삭제한다.")
+    @Test
+    void deletePost() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders
+                        .delete("/posts/{postId}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                ).andExpect(jsonPath("code").value("200"))
+                .andExpect(jsonPath("status").value("OK"))
+                .andExpect(jsonPath("message").value("OK"))
+                .andExpect(jsonPath("data").isEmpty())
                 .andDo(print());
     }
 }

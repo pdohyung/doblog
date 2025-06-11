@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import project.doblog.api.post.request.PostCreateRequest;
+import project.doblog.api.post.request.PostEditRequest;
 import project.doblog.api.post.request.PostSearchRequest;
 import project.doblog.application.post.PostService;
 import project.doblog.application.post.response.PostResponse;
@@ -32,7 +33,19 @@ public class PostController {
 
     @GetMapping
     public ApiResponse<List<PostResponse>> getPosts(@ModelAttribute PostSearchRequest request) {
-        List<PostResponse> response = postService.getPosts(request.toServiceRequest());
+        List<PostResponse> response = postService.getList(request.toServiceRequest());
         return ApiResponse.ok(response);
+    }
+
+    @PatchMapping("/{postId}")
+    public ApiResponse<Void> editPost(@PathVariable Long postId, @RequestBody @Valid PostEditRequest request) {
+        postService.edit(request.toServiceRequest(postId));
+        return ApiResponse.ok();
+    }
+
+    @DeleteMapping("/{postId}")
+    public ApiResponse<Void> deletePost(@PathVariable Long postId) {
+        postService.delete(postId);
+        return ApiResponse.ok();
     }
 }
