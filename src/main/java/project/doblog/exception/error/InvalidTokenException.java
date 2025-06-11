@@ -1,5 +1,7 @@
 package project.doblog.exception.error;
 
+import org.springframework.http.HttpStatus;
+
 public class InvalidTokenException extends DoblogExcpetion {
 
     private static final String MESSAGE = "토큰이 만료되었거나 유효하지 않습니다.";
@@ -9,7 +11,7 @@ public class InvalidTokenException extends DoblogExcpetion {
     }
 
     @Override
-    public int getStatusCode() {
-        return 401;
+    public HttpStatus getStatus() {
+        return HttpStatus.UNAUTHORIZED;
     }
 }

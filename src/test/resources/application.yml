@@ -1,0 +1,43 @@
+spring:
+  h2:
+    console:
+      enabled: true
+
+  datasource:
+    url: jdbc:h2:mem:doblog
+    username: sa
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        show_sql: true
+        format_sql: true
+    defer-datasource-initialization: true
+
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: dummy
+            client-secret: dummy
+            client-authentication-method: dummy
+            redirect-uri: dummy
+            authorization-grant-type: dummy
+            client-name: dummy
+            scope:
+              - dummy
+        provider:
+          kakao:
+            authorization-uri: dummy
+            token-uri: dummy
+            user-info-uri: dummy
+            user-name-attribute: dummy
+jwt:
+  secret_key: dummy
+  access_expirations: 0
+  refresh_expirations: 0
