@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.3.1'
     id 'io.spring.dependency-management' version '1.1.5'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'project'
@@ -17,6 +18,8 @@ configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
+
+    asciidoctorExt
 }
 
 repositories {
@@ -24,6 +27,9 @@ repositories {
 }
 
 dependencies {
+    // RestDocs
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
     // Redis
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // QueryDSL
@@ -53,4 +59,29 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+ext { // 전역 변수
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    baseDirFollowsSourceFile() // api adoc 파일 경로 설정
+    sources {
+        include("**/index.adoc") // 해당 파일만 html로 생성
+    }
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor
+    from("${asciidoctor.outputDir}/html5") {
+        into 'static/docs'
+    }
 }

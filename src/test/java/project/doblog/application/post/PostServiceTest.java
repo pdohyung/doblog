@@ -69,23 +69,23 @@ class PostServiceTest extends ServiceTestSupport {
     @DisplayName("1페이지 글을 조회한다.")
     @Test
     void getFirstPagePosts() {
-        List<Post> requests = IntStream.range(1, 21)
+        List<Post> posts = IntStream.range(1, 21)
                 .mapToObj(i -> Post.builder()
                         .title("제목" + i)
                         .content("내용" + i)
                         .build())
                 .toList();
 
-        postRepository.saveAll(requests);
+        postRepository.saveAll(posts);
 
         PostSearchServiceRequest request = PostSearchServiceRequest.builder()
                 .page(1)
                 .size(5)
                 .build();
 
-        List<PostResponse> posts = postService.getList(request);
+        List<PostResponse> list = postService.getList(request);
 
-        assertThat(posts).hasSize(5)
+        assertThat(list).hasSize(5)
                 .extracting("title", "content")
                 .containsExactly(
                         tuple("제목20", "내용20"),

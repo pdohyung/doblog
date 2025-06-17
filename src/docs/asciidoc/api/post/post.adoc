@@ -1,0 +1,64 @@
+[[post-write]]
+=== 글 작성
+
+==== HTTP Request
+
+include::{snippets}/post-write/http-request.adoc[]
+include::{snippets}/post-write/request-fields.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/post-write/http-response.adoc[]
+include::{snippets}/post-write/response-fields.adoc[]
+
+[[post-get]]
+=== 글 단건 조회
+
+==== HTTP Request
+
+include::{snippets}/post-get/http-request.adoc[]
+include::{snippets}/post-get/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/post-get/http-response.adoc[]
+include::{snippets}/post-get/response-fields.adoc[]
+
+[[post-getList]]
+=== 글 페이지 조회
+
+==== HTTP Request
+
+include::{snippets}/post-getList/http-request.adoc[]
+include::{snippets}/post-getList/query-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/post-getList/http-response.adoc[]
+include::{snippets}/post-getList/response-fields.adoc[]
+
+[[post-edit]]
+=== 글 수정
+
+==== HTTP Request
+
+include::{snippets}/post-edit/http-request.adoc[]
+include::{snippets}/post-edit/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/post-edit/http-response.adoc[]
+include::{snippets}/post-edit/response-fields.adoc[]
+
+[[post-delete]]
+=== 글 삭제
+
+==== HTTP Request
+
+include::{snippets}/post-delete/http-request.adoc[]
+include::{snippets}/post-delete/path-parameters.adoc[]
+
+==== HTTP Response
+
+include::{snippets}/post-delete/http-response.adoc[]
+include::{snippets}/post-delete/response-fields.adoc[]

@@ -98,8 +98,8 @@ class PostControllerTest extends ControllerTestSupport {
 
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/posts/{postId}", postId)
-                        .contentType(MediaType.APPLICATION_JSON)
                 )
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value("200"))
                 .andExpect(jsonPath("status").value("OK"))
                 .andExpect(jsonPath("message").value("OK"))
@@ -113,9 +113,11 @@ class PostControllerTest extends ControllerTestSupport {
         when(postService.getList(any(PostSearchServiceRequest.class))).thenReturn(List.of());
 
         mockMvc.perform(MockMvcRequestBuilders
-                        .get("/posts?page=1&size=5")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .get("/posts")
+                        .param("page", "1")
+                        .param("size", "5")
                 )
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value("200"))
                 .andExpect(jsonPath("status").value("OK"))
                 .andExpect(jsonPath("message").value("OK"))
@@ -136,6 +138,7 @@ class PostControllerTest extends ControllerTestSupport {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(om.writeValueAsString(request))
                 )
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value("200"))
                 .andExpect(jsonPath("status").value("OK"))
                 .andExpect(jsonPath("message").value("OK"))
@@ -149,7 +152,9 @@ class PostControllerTest extends ControllerTestSupport {
         mockMvc.perform(MockMvcRequestBuilders
                         .delete("/posts/{postId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
-                ).andExpect(jsonPath("code").value("200"))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("code").value("200"))
                 .andExpect(jsonPath("status").value("OK"))
                 .andExpect(jsonPath("message").value("OK"))
                 .andExpect(jsonPath("data").isEmpty())

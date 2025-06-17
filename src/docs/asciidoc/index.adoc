@@ -1,0 +1,17 @@
+ifndef::snippets[]
+:snippets: ../../build/generated-snippets
+endif::[]
+
+= doblog REST API 문서
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:sectlinks:
+:!table-caption:
+
+[[Post-API]]
+== Post API
+
+include::api/post/post.adoc[]
