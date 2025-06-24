@@ -8,7 +8,7 @@ import project.doblog.application.post.request.PostEditServiceRequest;
 import project.doblog.application.post.request.PostSearchServiceRequest;
 import project.doblog.application.post.response.PostResponse;
 import project.doblog.domain.post.Post;
-import project.doblog.exception.error.PostNotFoundException;
+import project.doblog.global.exception.error.PostNotFoundException;
 
 import java.util.List;
 import java.util.stream.IntStream;

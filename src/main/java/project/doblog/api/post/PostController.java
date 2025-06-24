@@ -8,7 +8,7 @@ import project.doblog.api.post.request.PostEditRequest;
 import project.doblog.api.post.request.PostSearchRequest;
 import project.doblog.application.post.PostService;
 import project.doblog.application.post.response.PostResponse;
-import project.doblog.exception.ApiResponse;
+import project.doblog.global.exception.ApiResponse;
 
 import java.util.List;
 

@@ -25,7 +25,7 @@ public class ServletUtils {
 
     public static void addAuthorizationRefreshHeaderToResponse(String token) {
         HttpServletResponse response = findServletResponse();
-        response.addHeader("Authorization-refresh", token);
+        response.addHeader("Authorization-refresh", "Bearer " + token);
     }
 
     public static void addRefreshTokenCookieToResponse(String token) {

@@ -38,6 +38,6 @@ spring:
             user-info-uri: dummy
             user-name-attribute: dummy
 jwt:
-  secret_key: dummy
+  secret: VEVTVF9TRUNSRVRfS0VZX0ZPUl9MT0NBTF9ERVZfT05MWSEh
   access_expirations: 0
   refresh_expirations: 0

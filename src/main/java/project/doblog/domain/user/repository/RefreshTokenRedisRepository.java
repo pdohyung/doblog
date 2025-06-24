@@ -1,9 +1,11 @@
 package project.doblog.domain.user.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import project.doblog.infra.security.jwt.token.RefreshToken;
+import project.doblog.domain.user.RefreshToken;
+
+import java.util.Optional;
 
 public interface RefreshTokenRedisRepository extends CrudRepository<RefreshToken, Long> {
 
-    RefreshToken findByRefreshToken(String refreshToken);
+    Optional<RefreshToken> findByRefreshToken(String refreshToken);
 }

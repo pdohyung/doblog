@@ -11,7 +11,7 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.test.web.servlet.MockMvc;
 import project.doblog.api.post.PostController;
 import project.doblog.application.post.PostService;
-import project.doblog.infra.security.jwt.JwtFilter;
+import project.doblog.global.jwt.filter.JwtFilter;
 
 @WebMvcTest(controllers = {
         PostController.class

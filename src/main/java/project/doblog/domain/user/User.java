@@ -1,14 +1,17 @@
 package project.doblog.domain.user;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+@ToString
 @Entity
 @Getter
-@Table(name = "users")
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"user_email", "user_login_type"})
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -20,24 +23,35 @@ public class User {
     @Column(name = "user_email")
     private String email;
 
-    @Column(name = "user_name")
-    private String name;
+    @Column(name = "user_password")
+    private String password;
 
-    @Column(name = "user_profile_image")
-    private String profileImage;
+    @Column(name = "user_nickname")
+    private String nickname;
+
+    @Column(name = "user_image")
+    private String image;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_role")
+    private Role role;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_login_type")
+    private LoginType loginType;
+
+    @Column(name = "user_social_id")
+    private String socialId;
 
     @Builder
-    private User(String email, String name, String profileImage) {
+    public User(String email, String password, String nickname, String image,
+                Role role, LoginType loginType, String socialId) {
         this.email = email;
-        this.name = name;
-        this.profileImage = profileImage;
-    }
-
-    public static User createUser(String email, String name, String profileImage) {
-        return User.builder()
-                .email(email)
-                .name(name)
-                .profileImage(profileImage)
-                .build();
+        this.password = password;
+        this.nickname = nickname;
+        this.image = image;
+        this.role = role;
+        this.loginType = loginType;
+        this.socialId = socialId;
     }
 }

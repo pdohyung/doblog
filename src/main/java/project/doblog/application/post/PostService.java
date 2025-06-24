@@ -10,7 +10,7 @@ import project.doblog.application.post.response.PostResponse;
 import project.doblog.domain.post.Post;
 import project.doblog.domain.post.PostEditor;
 import project.doblog.domain.post.repository.PostRepository;
-import project.doblog.exception.error.PostNotFoundException;
+import project.doblog.global.exception.error.PostNotFoundException;
 
 import java.util.List;
 
