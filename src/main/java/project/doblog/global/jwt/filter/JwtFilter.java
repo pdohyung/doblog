@@ -29,7 +29,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private static final List<String> WHITE_LIST = List.of("/error", "/favicon.ico", "/login", "/oauth2", "/h2-console");
+    private static final List<String> WHITE_LIST = List.of("/error", "/favicon.ico", "/login", "/oauth2", "/h2-console", "/users/sign-up");
 
     private final JwtService jwtService;
     private final ObjectMapper objectMapper;
